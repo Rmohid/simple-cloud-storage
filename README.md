@@ -1,6 +1,14 @@
-# Cloud Storage Service
+# Simple Cloud Storage
+
+[![Test](https://github.com/Rmohid/simple-cloud-storage/actions/workflows/test.yml/badge.svg)](https://github.com/Rmohid/simple-cloud-storage/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/Rmohid/simple-cloud-storage/branch/main/graph/badge.svg)](https://codecov.io/gh/Rmohid/simple-cloud-storage)
 
 A cloud-based service that provides an API to store and organize different types of data including text, images, sounds, and documents under customizable indexes.
+
+## Status
+
+- **CI/CD**: GitHub Actions automatically runs tests and linting on every push and pull request
+- **Test Coverage**: Code coverage reports are automatically generated and uploaded to Codecov
 
 ## Features
 
