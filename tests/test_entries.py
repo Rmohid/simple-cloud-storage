@@ -40,19 +40,20 @@ def test_create_file_entry(client, auth_headers, test_index):
     )
     
     # Create request data
-    data = {}
-    data['keywords'] = 'test,file'
-    data['file'] = test_file
-    
+    data = {
+        'keywords': 'test,file',
+        'file': test_file  # Add the file to the data dictionary
+    }
+
     # Send POST request
     response = client.post(
         f'/api/indexes/{test_index["_id"]}/entries',
         data=data,
         headers=auth_headers,
-        content_type='multipart/form-data'
+        content_type='multipart/form-data'  # Ensure correct content type
     )
     
-    assert response.status_code == 201
+    assert response.status_code == 201, f"Unexpected status code: {response.status_code}, Response: {response.data.decode()}"
     data = json.loads(response.data)
     assert data['type'] == 'file'
     assert 'metadata' in data

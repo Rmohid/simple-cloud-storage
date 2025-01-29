@@ -28,31 +28,16 @@ def create_entry(index_id):
     except:
         return jsonify({'msg': 'Invalid index ID'}), 400
     
-    # Get request data
-    data = request.get_json()
-    if not data:
-        return jsonify({'msg': 'Missing request body'}), 400
-
     file = None
     filename = None
     content_type = None
     file_id = None
     content = None
     entry_type = None
+    keywords = []
 
-    # Handle text entry
-    if request.is_json and 'content' in data:
-        entry_type = 'text'
-        content = data['content']
-        # Handle keywords as array or string
-        if isinstance(data.get('keywords'), list):
-            keywords = data['keywords']
-        else:
-            keywords = [k.strip() for k in data.get('keywords', '').split(',') if k.strip()]
-        file_id = None
-        metadata = None
     # Handle file upload
-    elif request.files and 'file' in request.files:
+    if request.files and 'file' in request.files:
         file = request.files['file']
         try:
             # Read file content
@@ -80,8 +65,23 @@ def create_entry(index_id):
             }
         except Exception as e:
             return jsonify({'msg': 'Error processing file upload'}), 400
+    # Handle text entry
+    elif request.is_json:
+        data = request.get_json()
+        if not data or 'content' not in data:
+            return jsonify({'msg': 'Missing content in JSON body'}), 400
+            
+        entry_type = 'text'
+        content = data['content']
+        # Handle keywords as array or string
+        if isinstance(data.get('keywords'), list):
+            keywords = data['keywords']
+        else:
+            keywords = [k.strip() for k in data.get('keywords', '').split(',') if k.strip()]
+        file_id = None
+        metadata = None
     else:
-        return jsonify({'msg': 'Missing content or file'}), 400
+        return jsonify({'msg': 'Request must be either multipart/form-data for files or application/json for text'}), 400
     
     # Create entry
     try:
